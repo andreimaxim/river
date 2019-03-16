@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres:10.7
+
+  broker:
+    image: rabbitmq:3.7
+
+  app:
+    build: .
+    links:
+      - db
+      - broker
