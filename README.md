@@ -85,7 +85,7 @@ CREATE TRIGGER river_notify
     EXECUTE PROCEDURE postgres.rvr_notify()
 ```
 
-Note that a trigger is defined for a sepcific table, so if you need to
+Note that a trigger is defined for a specific table, so if you need to
 monitor multiple tables you need to re-run the trigger part for each table,
 however all you need is to alter the `ON` clause and, if you want separate
 channel notifications.
