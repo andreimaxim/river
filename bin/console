@@ -1,14 +1,17 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "river"
+require File.expand_path('../lib/river', File.dirname(__FILE__))
+require 'river'
 
-# You can add fixtures and/or initialization code here to make experimenting
-# with your gem easier. You can also use a different console, if you like.
+begin
+  require 'pry'
 
-# (If you use this, don't forget to add pry to your Gemfile!)
-# require "pry"
-# Pry.start
+  Pry.start
+rescue LoadError
+  # Pry is not installed in production but we still want to have a working
+  # console environment for debugging.
+  require 'irb'
+  require 'irb/completion'
 
-require "irb"
-IRB.start(__FILE__)
+  IRB.start
+end

@@ -7,10 +7,28 @@ AllCops:
     - Rakefile
     - Gemfile
   UseCache: true
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
 
 Metrics/BlockLength:
   Enabled: false
 
 Metrics/LineLength:
   Max: 120
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Style/SymbolProc:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: empty_lines_except_namespace
+
+Layout/EmptyLinesAroundModuleBody:
+  EnforcedStyle: empty_lines_except_namespace
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: aligned
+
+Layout/SpaceInsidePercentLiteralDelimiters:
+  Enabled: false

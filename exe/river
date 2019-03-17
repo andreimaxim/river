@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 
-require "river"
+require File.expand_path('../lib/river', File.dirname(__FILE__))
+require 'river'

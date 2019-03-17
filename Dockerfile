@@ -1,4 +1,4 @@
-FROM jruby:9.2.6.0
+FROM ruby:2.6.2
 
 # Bundler options
 #
@@ -18,9 +18,13 @@ ENV APP_DIR="/opt/river"
 
 # Create a non-root user
 RUN groupadd -r deploy \
-    && useradd -m -r -g deploy deploy
+        && useradd -m -r -g deploy deploy
 RUN mkdir -p ${APP_DIR} \
-    && chown -R deploy:deploy ${APP_DIR}
+        && chown -R deploy:deploy ${APP_DIR}
+
+RUN apt-get update -qq \
+        && apt-get install -y build-essential libpq-dev
+
 
 # Move the the application folder to perform all the following tasks.
 WORKDIR ${APP_DIR}
@@ -50,5 +54,5 @@ COPY --chown=deploy:deploy . ./
 #
 # In this case, we're prefixing everything with `jruby -G` so we don't have
 # to do this every time we start the container or when running commands.
-ENTRYPOINT ["jruby", "-G"]
+ENTRYPOINT ["bundle", "exec"]
 CMD ["exe/river"]
