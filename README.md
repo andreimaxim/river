@@ -75,7 +75,7 @@ First, you need to define a general function that gets triggered whenever
 some data is altered. You can implement one yourself or you can use the
 one below:
 
-``` plsql
+```plsql
 BEGIN;
 
   CREATE OR REPLACE FUNCTION river.tg_river_notify()
