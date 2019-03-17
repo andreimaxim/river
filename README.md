@@ -1,7 +1,7 @@
 # River
 
-<img src="https://fmap.ro/river/logo.jpg"
-  alt="No power in the 'verse can stop me." align="right" />
+[<img src="https://fmap.ro/river/logo.jpg"
+  alt="No power in the 'verse can stop me." align="right" />](https://www.deviantart.com/otisframpton/art/Ain-t-Justa-394650273)
 
 > *Simon*: You're in a dangerous line of work, Jayne. Odds are you'll be under
 > my knife again, often. So I want you to understand one thing very clearly:
@@ -18,11 +18,27 @@
 > *River*: Also, I can kill you with my brain.
 > - from [Firefly](https://www.imdb.com/title/tt0303461/)
 
-River is a more reliable alternative to the Salesforce Streaming API that
-leverages Heroku Connect, Postgres PUB/SUB and RabbitMQ.
+River is a reliable streaming API implementation for PostgreSQL version 9.4
+and above, using RabbitMQ as a message broker.
+
+
+## Architecture
+
+PostgreSQL version 9.4 offers a set of non-standard SQL commands (`NOTIFY`
+and `LISTEN`) which can be used as an event publication system. A sample
+trigger that uses the `pg_notify` method is provided in the `doc` folder,
+with ample documentation to simply customization based on individual needs.
+
+The `river` service listens to those notifications and pushes the payload
+to a RabbitMQ service.
 
 
 ## Basic Usage
+
+TBD
+
+
+## Configuration
 
 The actual usage is quite simple, assuming you already have a properly configured
 Heroku Connect that syncs all the data from Salesforce into a Postgres database
@@ -55,80 +71,15 @@ value (`account__c`) as the source table and the put those events in the
 If no topics are specified, no events will be created on the RabbitMQ side.
 
 
-## Postgres Setup
+## Documentation
 
-This setup works with virtually every Postgres version available on Heroku,
-which is the only place where you can have Heroku Connect.
+TBD
 
-Assuming you have a `river` schema and a sample table that should contain
-transactions named `txns`:
 
-```plpgsql
-CREATE TABLE IF NOT EXISTS river.txns (
-  id SERIAL PRIMARY KEY,
-  user_id INT NOT NULL,
-  amt INT NOT NULL
-);
-```
+## License
 
-First, you need to define a general function that gets triggered whenever
-some data is altered. You can implement one yourself or you can use the
-one below (the documented version is in `doc/trigger.sql`):
+Soruce Copyright (c) 2019 Andrei Maxim and
+[contributors](https://github.com/technomancy/leiningen/contributors).
+Distributed under the Eclipse Public License. See the file COPYING.
 
-```plpgsql
-BEGIN;
-
-  CREATE OR REPLACE FUNCTION river.tg_river_notify()
-    RETURNS TRIGGER
-    LANGUAGE plpgsql
-  AS $$
-  DECLARE
-    channel TEXT := TG_ARGV[0];
-    prev JSON;
-    curr JSON;
-  BEGIN
-
-    IF TG_OP = 'INSERT' THEN
-      curr := row_to_json(NEW);
-      prev := json_object('{}');
-    ELSIF TG_OP = 'UPDATE' THEN
-      curr := row_to_json(NEW);
-      prev := row_to_json(OLD);
-    ELSE
-      curr := json_object('{}');
-      prev := row_to_json(OLD);
-    END IF;
-
-    PERFORM pg_notify(
-      channel,
-      json_build_object(
-        'meta', json_build_object(
-          'table', TG_TABLE_NAME,
-          'action', TG_OP,
-          'timestamp', NOW()
-        ),
-        'data', json_build_object('curr', curr, 'prev', prev)
-      )::text
-    );
-
-    RETURN NULL;
-  END;
-$$;
-
-CREATE TRIGGER river_notify
-  AFTER INSERT OR UPDATE OR DELETE
-  ON river.txns
-  FOR EACH ROW
-  EXECUTE PROCEDURE river.tg_river_notify('river_events');
-
-COMMIT;
-```
-
-Note that a trigger is defined for a specific table, so if you need to
-monitor multiple tables you need to re-run the trigger part for each table,
-however all you need is to alter the `ON` clause and, if you want separate
-channel notifications.
-
-You can verify if the trigger works correctly by connecting to Postgres
-and running a `LISTEN river_events`. Of course, the name of the exact channel
-can be changed by altering the above function.
+Logo (c) 2013-2019 [Otis Frampton](https://www.deviantart.com/otisframpton/art/Ain-t-Justa-394650273)
