@@ -79,7 +79,7 @@ TBD
 ## License
 
 Soruce Copyright (c) 2019 Andrei Maxim and
-[contributors](https://github.com/technomancy/leiningen/contributors).
+[contributors](https://github.com/andreimaxim/river/contributors).
 Distributed under the Eclipse Public License. See the file COPYING.
 
-Logo (c) 2013-2019 [Otis Frampton](https://www.deviantart.com/otisframpton/art/Ain-t-Justa-394650273)
+Logo (c) 2013-2019 [Otis Frampton](https://www.deviantart.com/otisframpton/art/Ain-t-Justa-394650273).
