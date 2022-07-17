@@ -1,6 +1,6 @@
 # River
 
-[<img src="https://fmap.ro/river/logo.jpg"
+[<img src="https://user-images.githubusercontent.com/256/179403389-50206186-9e2c-4dad-8015-a64be14de75c.jpg" height="400px"
   alt="No power in the 'verse can stop me." align="right" />](https://www.deviantart.com/otisframpton/art/Ain-t-Justa-394650273)
 
 > *Simon*: You're in a dangerous line of work, Jayne. Odds are you'll be under
